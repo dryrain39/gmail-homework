@@ -11,12 +11,11 @@ import sys
 import unicodedata
 
 reload(sys)
-
 sys.setdefaultencoding("utf-8")
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Read configuration before start.
+
 def read_config():
     try:
         with open("config.json") as json_file:
@@ -48,7 +47,7 @@ def get_visible_text(html):
 
 
 def parse_url(url_string):
-    urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', url_string)
+    urls = re.findall('http[s]?://[a-z0-9]+([\-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$', url_string)
     return urls
 
 
@@ -57,28 +56,42 @@ def db_insert():
 
 
 def download_image(url):
-    r = requests.get('http://fl0ckfl0ck.info/%E1%84%88%E1%85%A9%E1%84%88%E1%85%B5.jpg')
+    try:
+        r = requests.get(url)
+    except Exception:
+        logging.error("Cannot access url.")
+        return False
+
     logging.debug(r.headers['content-type'])
     logging.debug(r)
     header = r.headers['content-type'].split('/')
     if header[0] == "image":
-        logging.debug("image ok.")
+        logging.debug("Image detected.")
 
         if r.url.find('/'):
             filename = r.url.rsplit('/', 1)[1]
             filename = unicodedata.normalize('NFC', unicode(urllib.unquote(str(filename)))).decode()
 
-            logging.debug(filename)
-
         with open(filename, 'wb') as f:
             for chunk in r:
                 f.write(chunk)
-    pass
+
+        logging.debug(filename + " download successful.")
+        return True
+
+    logging.error(url + " is not image or 404.")
+    return False
 
 
-download_image(False)
+def url_check(url):
+    while download_image(url) is False:
+        logging.debug("download Failed. retry: ")
+        pass
 
-exit()
+
+# download_image('http://fl0ckfl0ck.info/%E1%84%88%E1%85%A9%E1%84%88%E1%85%B5.jpg')
+
+# exit()
 cfg = read_config()
 for i in get_mail(cfg["account_user"], cfg["account_pass"], cfg["mail_sender"]):
     logging.debug(parse_url(get_visible_text(i)))
