@@ -56,27 +56,27 @@ def db_insert():
     pass
 
 
-def download_image():
+def download_image(url):
     r = requests.get('http://fl0ckfl0ck.info/%E1%84%88%E1%85%A9%E1%84%88%E1%85%B5.jpg')
     logging.debug(r.headers['content-type'])
     logging.debug(r)
     header = r.headers['content-type'].split('/')
     if header[0] == "image":
-        logging.debug("ok")
+        logging.debug("image ok.")
 
         if r.url.find('/'):
             filename = r.url.rsplit('/', 1)[1]
-            filename = str(filename.decode('utf-8'))
+            filename = unicodedata.normalize('NFC', unicode(urllib.unquote(str(filename)))).decode()
 
-            logging.debug(unicodedata.normalize('NFC', unicode(urllib.unquote(str(filename)))).decode())
+            logging.debug(filename)
 
-        with open(unicodedata.normalize('NFC', unicode(urllib.unquote(str(filename)))).decode(), 'wb') as f:
+        with open(filename, 'wb') as f:
             for chunk in r:
                 f.write(chunk)
     pass
 
 
-download_image()
+download_image(False)
 
 exit()
 cfg = read_config()
