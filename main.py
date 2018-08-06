@@ -1,15 +1,20 @@
-from gmail import Gmail
+# -*- coding: utf-8 -*-
+
+from gmail.gmail import Gmail
 import json
 from bs4 import BeautifulSoup
 import re
+import requests
+import urllib
+import logging
+import sys
+import unicodedata
 
-DEBUG = True
+reload(sys)
 
+sys.setdefaultencoding("utf-8")
 
-def debug(text):
-    if DEBUG is True:
-        print(text)
-
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Read configuration before start.
 def read_config():
@@ -28,7 +33,7 @@ def get_mail(gid, pw, sender):
     m = []
     for mail in mails:
         mail.fetch()
-        debug(mail.html)
+        logging.debug(mail.html)
         m.append(mail.html)
 
     g.logout()
@@ -47,6 +52,33 @@ def parse_url(url_string):
     return urls
 
 
+def db_insert():
+    pass
+
+
+def download_image():
+    r = requests.get('http://fl0ckfl0ck.info/%E1%84%88%E1%85%A9%E1%84%88%E1%85%B5.jpg')
+    logging.debug(r.headers['content-type'])
+    logging.debug(r)
+    header = r.headers['content-type'].split('/')
+    if header[0] == "image":
+        logging.debug("ok")
+
+        if r.url.find('/'):
+            filename = r.url.rsplit('/', 1)[1]
+            filename = str(filename.decode('utf-8'))
+
+            logging.debug(unicodedata.normalize('NFC', unicode(urllib.unquote(str(filename)))).decode())
+
+        with open(unicodedata.normalize('NFC', unicode(urllib.unquote(str(filename)))).decode(), 'wb') as f:
+            for chunk in r:
+                f.write(chunk)
+    pass
+
+
+download_image()
+
+exit()
 cfg = read_config()
 for i in get_mail(cfg["account_user"], cfg["account_pass"], cfg["mail_sender"]):
-    debug(parse_url(get_visible_text(i)))
+    logging.debug(parse_url(get_visible_text(i)))
