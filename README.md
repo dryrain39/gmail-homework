@@ -9,6 +9,7 @@
  - [ ] postman - 메인 실행 함수
  - [x] constructor - 폴더 생성 함수
  - [x] downloader - 이미지 다운로더 함수
+ - [x] parser - URL, HTML Text 파싱 함수
  - [x] gps_finder - EXIF GPS 파싱 함수
  - [x] hashman - 해쉬 추출 함수
  - [ ] stenographer - CSV 작성 함수
