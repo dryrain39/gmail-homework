@@ -3,7 +3,7 @@ import csv
 
 def write(data, path):
     with open(path, 'a') as csvfile:
-        fieldnames = ['first_name', 'last_name']
+        fieldnames = ['Date', 'Short URL', 'Full URL', 'Filename', 'Latitude', 'Longitude', 'MD5', 'SHA1']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
         writer.writerow(data)

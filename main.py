@@ -11,6 +11,7 @@ import location_master
 import hashman
 import downloader
 import parser
+import stenographer
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -48,7 +49,7 @@ def postman(mail, time):
         'Date': time.strftime('%Y-%m-%d %H:%M:%S'),
         'Short URL': "",
         'Full URL': "",
-        'Filename': False,
+        'Filename': "",
         'Latitude': "N/A",
         'Longitude': "N/A",
         'MD5': None,
@@ -67,13 +68,16 @@ def postman(mail, time):
         if downloader_result is False:
             return None
 
+        print(downloader_result['filename'])
         data["Filename"] = downloader_result['filename']
         data["Short URL"] = downloader_result['short_url']
         data["Full URL"] = downloader_result['full_url']
 
+    path = dirname + '/' + data["Filename"]
+
     # gps_finder
     try:
-        image = Image.open(dirname + '/' + data["Filename"])
+        image = Image.open(path)
         gps_data = location_master.get_exif_data(image)
         data['Latitude'] = gps_data[0]
         data['Longitude'] = gps_data[1]
@@ -81,12 +85,12 @@ def postman(mail, time):
         pass
 
     # hashman
-    hash_data = hashman.hashall(dirname + '/' + data["Filename"])
+    hash_data = hashman.hashall(path)
     data["MD5"] = hash_data["MD5"]
     data["SHA1"] = hash_data["SHA1"]
 
     # stenographer
-    print(data)
+    stenographer.write(data, "./db.csv")
 
     # map_drawer
 
