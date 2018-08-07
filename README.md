@@ -1,4 +1,5 @@
 # gmail-homework
+지정한 메일주소에서 url을 읽어들여 이미지면 다운받아 정리해주는 스크립트입니다.
 
 ## Description 
 집에가고싶어요..
