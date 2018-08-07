@@ -5,6 +5,18 @@
 
 ~~집에가고싶어요..~~
 
+## TODO
+ - [x] postman
+ - [x] constructor
+ - [x] downloader
+ - [x] gps_finder
+ - [x] hashman
+ - [ ] stenographer
+ - [ ] map_drawer
+ - [ ] treasure_hunter
+ - [ ] watchmaker
+ - [ ] Code beautify
+
 ## config.json
 ```json
 {
