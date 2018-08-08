@@ -11,7 +11,7 @@
  - [x] downloader - 이미지 다운로더 함수
  - [x] gps_finder - EXIF GPS 파싱 함수
  - [x] hashman - 해쉬 추출 함수
- - [ ] stenographer - CSV 작성 함수
+ - [x] stenographer - CSV 작성 함수
  - [ ] map_drawer - 각 이미지별 GPS 시각화 함수
  - [ ] treasure_hunter - 전체 이미지 GPS 시각화 함수 (selenium) 
  - [ ] watchmaker - 윈도우 스케쥴러 등록 함수 
