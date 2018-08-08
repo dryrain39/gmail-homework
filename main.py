@@ -79,8 +79,10 @@ def postman(mail, time):
     try:
         image = Image.open(path)
         gps_data = location_master.get_exif_data(image)
-        data['Latitude'] = gps_data[0]
-        data['Longitude'] = gps_data[1]
+        gps_data = location_master.get_lat_lon(gps_data)
+        print gps_data
+        data['Latitude'] = 'N/A' if gps_data[0] is None else gps_data[0]
+        data['Longitude'] = 'N/A' if gps_data[1] is None else gps_data[1]
     except Exception:
         pass
 
