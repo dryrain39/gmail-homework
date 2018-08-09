@@ -10,7 +10,7 @@ import os
 import location_master
 import hashman
 import downloader
-import parser
+import parseman
 import stenographer
 
 reload(sys)
@@ -25,7 +25,7 @@ def read_config():
             json_data = json.load(json_file)
             return json_data
     except Exception:
-        exit("Config read error.")
+        sys.exit("Config read error.")
 
 
 def get_mail(gid, pw, sender):
@@ -62,7 +62,7 @@ def postman(mail, time):
         os.makedirs(dirname)
 
     # downloader
-    for url in parser.url(parser.text(mail)):
+    for url in parseman.url(parseman.text(mail)):
         downloader_result = downloader.download(url, dirname)
 
         if downloader_result is False:
@@ -105,7 +105,15 @@ def postman(mail, time):
 
 def start():
     global cfg
+
+    logging.debug("check system config...")
     cfg = read_config()
+
+    logging.debug("check system database...")
+    if not os.path.exists(cfg["csv_path"]):
+        logging.debug("create new system database...")
+        stenographer.make_new(cfg["csv_path"])
+
     mailbox = get_mail(cfg["account_user"], cfg["account_pass"], cfg["mail_sender"])
 
     for idx, mail in enumerate(mailbox[0]):
