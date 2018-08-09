@@ -17,3 +17,10 @@ def make_new(path):
 
         writer.writeheader()
     pass
+
+
+def read(path):
+    with open(path, 'r') as csvfile:
+        r = list(csv.reader(csvfile))
+        return r
+    pass
