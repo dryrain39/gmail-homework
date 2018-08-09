@@ -68,7 +68,6 @@ def postman(mail, time):
         if downloader_result is False:
             return None
 
-        print(downloader_result['filename'])
         data["Filename"] = downloader_result['filename']
         data["Short URL"] = downloader_result['short_url']
         data["Full URL"] = downloader_result['full_url']
@@ -80,7 +79,6 @@ def postman(mail, time):
         image = Image.open(path)
         gps_data = location_master.get_exif_data(image)
         gps_data = location_master.get_lat_lon(gps_data)
-        print gps_data
         data['Latitude'] = 'N/A' if gps_data[0] is None else gps_data[0]
         data['Longitude'] = 'N/A' if gps_data[1] is None else gps_data[1]
     except Exception:
@@ -105,9 +103,10 @@ def postman(mail, time):
     pass
 
 
-global cfg
-cfg = read_config()
-mailbox = get_mail(cfg["account_user"], cfg["account_pass"], cfg["mail_sender"])
+def start():
+    global cfg
+    cfg = read_config()
+    mailbox = get_mail(cfg["account_user"], cfg["account_pass"], cfg["mail_sender"])
 
-for idx, mail in enumerate(mailbox[0]):
-    postman(mail, mailbox[1][idx])
+    for idx, mail in enumerate(mailbox[0]):
+        postman(mail, mailbox[1][idx])
