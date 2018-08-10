@@ -47,7 +47,7 @@ if len(sys.argv) < 2:
         3. Remove Schedule task.
         4. Exit/Quit
         """)
-        ans = raw_input("What would you like to do? ")
+        ans = raw_input("SELECT >")
         if ans == "1":
             start_gmail()
         elif ans == "2":
@@ -56,20 +56,22 @@ if len(sys.argv) < 2:
             print("\n Student Record Found")
         elif ans == "4":
             sys.exit('USER EXIT')
-        elif ans != "":
+        else:
             print("\n Not Valid Choice. Try again")
 
 
-if sys.argv[1] == 'gmail':
-    start_gmail()
-    pass
+else:
 
-if sys.argv[1] == 'reg_service':
-    pass
+    if sys.argv[1] == 'gmail':
+        start_gmail()
+        pass
 
-if sys.argv[1] == 'del_service':
-    pass
+    if sys.argv[1] == 'reg_service':
+        pass
 
-if sys.argv[1] == 'exit':
-    sys.exit('USER EXIT')
-    pass
+    if sys.argv[1] == 'del_service':
+        pass
+
+    if sys.argv[1] == 'exit':
+        sys.exit('USER EXIT')
+        pass
