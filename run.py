@@ -5,6 +5,7 @@ import stenographer
 import sys
 import json
 import os
+from mapmaker import Mapmaker
 
 
 def start_gmail():
@@ -21,10 +22,20 @@ def read_config():
         return False
 
 
+def read_database(path):
+    try:
+        with open(path) as json_file:
+            a = json_file
+            return a
+            pass
+    except Exception:
+        return False
+
+
 if len(sys.argv) < 2:
     print("[....] Check system config...")
     cfg = read_config()
-    if cfg is False:
+    if read_config() is False:
         print("[ERR!] Please download system config! --> https://github.com/dryrain39/gmail-homework")
         sys.exit('Config Not Found')
 
@@ -33,8 +44,8 @@ if len(sys.argv) < 2:
         sys.exit('Config Not Set')
 
     print("[....] Check system database...")
-    if not os.path.exists(cfg["csv_path"]):
-        logging.debug("[INFO] Database not found. Create new system database...")
+    if read_database(cfg["csv_path"]) is False:
+        print("[INFO] Database not found. Create system database...")
         stenographer.make_new(cfg["csv_path"])
 
     print("[INFO] Everything OK.")
@@ -45,7 +56,8 @@ if len(sys.argv) < 2:
         1. Sync Gmail now.
         2. Add Schedule task.
         3. Remove Schedule task.
-        4. Exit/Quit
+        4. Draw Google Map
+        q. Exit/Quit
         """)
         ans = raw_input("SELECT >")
         if ans == "1":
@@ -55,14 +67,24 @@ if len(sys.argv) < 2:
         elif ans == "3":
             print("\n Student Record Found")
         elif ans == "4":
+            maps = Mapmaker()
+            maps.imageSize = '2000x3000'
+            data = stenographer.read(cfg["csv_path"])
+            for idx, item in enumerate(data):
+                if idx > 1 and item[4] != 'N/A' and item[5] != 'N/A':
+                    maps.add_item(item[4] + ',' + item[5])
+
+            maps.draw_map()
+            pass
+        elif ans == "q":
             sys.exit('USER EXIT')
         else:
             print("\n Not Valid Choice. Try again")
 
-
 else:
 
     if sys.argv[1] == 'gmail':
+        print("[INFO] Sync Gmail now. Please Wait...")
         start_gmail()
         pass
 
