@@ -16,7 +16,7 @@ import stenographer
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def read_config():
@@ -63,6 +63,9 @@ def postman(mail, time):
 
     # downloader
     for url in parseman.url(parseman.text(mail)):
+        if len(url) > 200:
+            return None
+
         downloader_result = downloader.download(url, dirname)
 
         if downloader_result is False:
