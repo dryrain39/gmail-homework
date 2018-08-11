@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import re
+import logging
 
 
 def text(html):
@@ -12,5 +13,5 @@ def text(html):
 def url(url_string):
     urls = re.findall('(http[s]?://[a-z0-9]+([\-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$)', url_string)
     urls = [tuple(j for j in i if j)[0] for i in urls]
-
+    logging.debug(urls)
     return urls
