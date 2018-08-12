@@ -67,7 +67,7 @@ maps = Mapmaker()
 
 def map_setting(config):
     for idx, item in enumerate(config['map_preset']):
-        print('\t\t' + str(idx + 1) + ' - ' + item[0])
+        print('        ' + str(idx + 1) + ' - ' + item[0])
 
     ans = raw_input("[....] SELECT NUMBER >")
 
