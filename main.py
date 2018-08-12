@@ -16,8 +16,6 @@ import stenographer
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
 
 def read_config():
     try:
@@ -92,17 +90,13 @@ def postman(mail, time):
     data["MD5"] = hash_data["MD5"]
     data["SHA1"] = hash_data["SHA1"]
 
+    local_csv = dirname + '/' + time.strftime('%Y-%m-%d') + '.csv'
+    if stenographer.check(local_csv) is False:
+        stenographer.make_new(local_csv)
+    stenographer.write(data, local_csv)
+
     # stenographer
-    stenographer.write(data, "./db.csv")
-
-    # map_drawer
-
-    # watchmaker
-
-    # treasure_hunter
-
-    # print(mail)
-
+    stenographer.write(data, cfg['csv_path'])
     pass
 
 
