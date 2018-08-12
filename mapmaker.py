@@ -3,14 +3,13 @@ import logging
 
 
 class Mapmaker:
-    imagePath = ''
     locationArray = []
     imageSize = '640x640'
+    saveLocation = './all.jpg'
     center = None
     zoom = None
 
-    def __init__(self, imgPath):
-        self.imagePath = imgPath
+    def __init__(self):
         logging.debug('Mapmaker Loaded!')
 
     def reform(self):
@@ -23,6 +22,7 @@ class Mapmaker:
     def reset(self):
         self.locationArray = []
         self.imageSize = '640x640'
+        self.saveLocation = './'
         self.center = None
         self.zoom = None
 
@@ -30,8 +30,6 @@ class Mapmaker:
         self.locationArray.append(item)
 
     def draw_map(self):
-        print self.locationArray
-
         ct = 'center=' + self.center + '&' if self.center is not None else ''
         zm = 'zoom=' + self.zoom + '&' if self.zoom is not None else ''
 
@@ -44,12 +42,10 @@ class Mapmaker:
         for idx, loc in enumerate(self.locationArray):
             url = url + '|' + loc
 
-        print url
-
         r = requests.get(url)
         header = r.headers['content-type'].split('/')
         if header[0] == "image":
-            with open(self.imagePath + "all.jpg", 'wb') as f:
+            with open(self.saveLocation, 'wb') as f:
                 for chunk in r:
                     f.write(chunk)
 
