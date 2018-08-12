@@ -38,12 +38,12 @@ def system_check():
     cfg = read_config()
     if cfg is False:
         print("[ERR!] System config not found! Set your credential in config.json!")
-        input()
+        l = input()
         sys.exit('Config Not Found')
 
     if cfg['account_pass'] == '' or cfg['account_user'] == '' or cfg['mail_sender'] == '':
         print("[ERR!] Set your credential in config.json")
-        input()
+        l = input()
         sys.exit('Config Not Set')
 
     print("[....] Check system database...")
