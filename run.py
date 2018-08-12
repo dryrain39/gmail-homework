@@ -93,6 +93,16 @@ def update_images():
                     maps.draw_map()
 
 
+def draw_all():
+    data = stenographer.read(cfg["csv_path"])
+    for idx, item in enumerate(data):
+        if idx > 0 and item[4] != 'N/A' and item[5] != 'N/A':
+            maps.add_item(item[4] + ',' + item[5])
+
+    maps.saveLocation = cfg['image_dir'] + 'all.jpg'
+    maps.draw_map()
+
+
 def start_gmail():
     import main
     print("[INFO] Sync started. Please wait...")
@@ -108,7 +118,7 @@ if len(sys.argv) < 2:
         1. Sync Gmail now.
         2. Add Schedule task.
         3. Remove Schedule task.
-        4. [ALL] Draw Google Map
+        4. [ALL!] Re-Draw Google Map
         5. [EACH] Re-draw Google Map
         6. Map draw setting
         q. Exit
@@ -123,21 +133,15 @@ if len(sys.argv) < 2:
 
         elif ans == "2":
             logging.debug(sys.argv[0])
-            os.system('SchTasks /Create /SC DAILY /TN sync1150 /TR "' + str(sys.argv[0]) + '" /ST 11:50')
-            os.system('SchTasks /Create /SC DAILY /TN sync2350 /TR "' + str(sys.argv[0]) + '" /ST 23:50')
+            os.system('SchTasks /Create /SC DAILY /TN sync1150 /TR "' + str(sys.argv[0]) + ' gmail" /ST 11:50')
+            os.system('SchTasks /Create /SC DAILY /TN sync2350 /TR "' + str(sys.argv[0]) + ' gmail" /ST 23:50')
 
         elif ans == "3":
             os.system('Schtasks /delete /tn sync1150 /f')
             os.system('Schtasks /delete /tn sync2350 /f')
 
         elif ans == "4":
-            data = stenographer.read(cfg["csv_path"])
-            for idx, item in enumerate(data):
-                if idx > 0 and item[4] != 'N/A' and item[5] != 'N/A':
-                    maps.add_item(item[4] + ',' + item[5])
-
-            maps.saveLocation = cfg['image_dir'] + 'all.jpg'
-            maps.draw_map()
+            draw_all()
 
         elif ans == "5":
             update_images()
@@ -167,14 +171,5 @@ else:
     if sys.argv[1] == 'gmail':
         print("[INFO] Sync Gmail now. Please Wait...")
         start_gmail()
-        pass
-
-    if sys.argv[1] == 'reg_service':
-        pass
-
-    if sys.argv[1] == 'del_service':
-        pass
-
-    if sys.argv[1] == 'exit':
-        sys.exit('USER EXIT')
+        draw_all()
         pass
