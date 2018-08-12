@@ -14,12 +14,10 @@ def read_config():
     try:
         with open("config.json") as json_file:
             json_data = json.load(json_file)
-            json_data.close()
             return json_data
     except Exception:
         with open("config.json", 'w') as json_file:
             json_file.write(paste.json_file())
-            json_file.close()
         return False
 
 
@@ -27,7 +25,6 @@ def read_database(path):
     try:
         with open(path) as json_file:
             a = json_file
-            json_file.close()
             return a
             pass
     except Exception:
