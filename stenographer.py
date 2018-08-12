@@ -24,3 +24,13 @@ def read(path):
         r = list(csv.reader(csvfile))
         return r
     pass
+
+
+def check(path):
+    try:
+        with open(path) as json_file:
+            a = json_file
+            return a
+            pass
+    except Exception:
+        return False
