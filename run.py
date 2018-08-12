@@ -7,14 +7,19 @@ import json
 import os
 import shutil
 from mapmaker import Mapmaker
+import paste
 
 
 def read_config():
     try:
         with open("config.json") as json_file:
             json_data = json.load(json_file)
+            json_data.close()
             return json_data
     except Exception:
+        with open("config.json", 'w') as json_file:
+            json_file.write(paste.json_file())
+            json_file.close()
         return False
 
 
@@ -22,6 +27,7 @@ def read_database(path):
     try:
         with open(path) as json_file:
             a = json_file
+            json_file.close()
             return a
             pass
     except Exception:
@@ -34,7 +40,7 @@ def system_check():
     print("[....] Check system config...")
     cfg = read_config()
     if read_config() is False:
-        print("[ERR!] Please download system config! --> https://github.com/dryrain39/gmail-homework")
+        print("[ERR!] System config not found! Set your credential in config.json!")
         sys.exit('Config Not Found')
 
     if cfg['account_pass'] == '' or cfg['account_user'] == '' or cfg['mail_sender'] == '':
