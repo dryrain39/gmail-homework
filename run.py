@@ -36,7 +36,7 @@ def system_check():
 
     print("[....] Check system config...")
     cfg = read_config()
-    if read_config() is False:
+    if cfg is False:
         print("[ERR!] System config not found! Set your credential in config.json!")
         sys.exit('Config Not Found')
 
@@ -122,6 +122,7 @@ if len(sys.argv) < 2:
             start_gmail()
 
         elif ans == "2":
+            logging.debug(sys.argv[0])
             os.system('SchTasks /Create /SC DAILY /TN sync1150 /TR "' + str(sys.argv[0]) + '" /ST 11:50')
             os.system('SchTasks /Create /SC DAILY /TN sync2350 /TR "' + str(sys.argv[0]) + '" /ST 23:50')
 
