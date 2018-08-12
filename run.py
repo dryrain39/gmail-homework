@@ -119,10 +119,12 @@ if len(sys.argv) < 2:
             start_gmail()
 
         elif ans == "2":
-            print("\n Student Deleted")
+            os.system('SchTasks /Create /SC DAILY /TN sync1150 /TR "' + str(sys.argv[0]) + '" /ST 11:50')
+            os.system('SchTasks /Create /SC DAILY /TN sync2350 /TR "' + str(sys.argv[0]) + '" /ST 23:50')
 
         elif ans == "3":
-            print("\n Student Record Found")
+            os.system('Schtasks /delete /tn sync1150 /f')
+            os.system('Schtasks /delete /tn sync2350 /f')
 
         elif ans == "4":
             data = stenographer.read(cfg["csv_path"])
