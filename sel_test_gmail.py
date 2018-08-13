@@ -9,7 +9,7 @@ import json
 import sys
 import logging
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def read_config():
@@ -55,8 +55,33 @@ while True:
         pass
 
 time.sleep(3)
-searchBox = driver.find_element_by_xpath('//*[@name="q"]')
-searchBox.send_keys("from:(fl0ckfl0ck@hotmail.com)" + "\n")
+
+while True:
+    searchBox = driver.find_element_by_xpath('//*[@name="q"]')
+    searchBox.clear()
+    searchBox.send_keys("is:unread from:(fl0ckfl0ck@hotmail.com)" + "\n")
+
+    time.sleep(3)
+
+    try:
+    # mailList = driver.find_element_by_xpath(
+    #     '/html/body/table[3]/tbody/tr/td[2]/table[1]/tbody/tr/td[2]/form/table[2]/tbody/tr[1]/td[3]/a')
+        mailList = driver.find_element_by_xpath(
+            '/html/body/table[2]/tbody/tr/td[2]/table[1]/tbody/tr/td[2]/form/table[2]/tbody/tr[1]/td[3]/a/span/b'
+        )
+        mailList.click()
+    except Exception:
+        break
+
+    time.sleep(1)
+    mailText = driver.find_element_by_xpath(
+        '//*[@class="msg"]/div')
+    print mailText.text
+
+    time.sleep(1)
+    mailTime = driver.find_element_by_xpath(
+        '//*[@bgcolor="#cccccc"]/tbody/tr/td/table/tbody/tr/td[2]')
+    print mailTime.text
 
 # nextButton = driver.find_element_by_id('next')
 # nextButton.click()
