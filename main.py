@@ -29,7 +29,7 @@ def read_config():
 def get_mail(gid, pw, sender):
     g = Gmail()
     g.login(gid, pw)
-    mails = g.inbox().mail(sender=sender)
+    mails = g.inbox().mail(sender=sender, unread=True)
     m = []
     d = []
     for mail in mails:
