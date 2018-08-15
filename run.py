@@ -9,6 +9,7 @@ import shutil
 from mapmaker import Mapmaker
 import paste
 import conf
+import sel_test_gmail
 
 
 def system_check():
@@ -105,6 +106,7 @@ if len(sys.argv) < 2:
         4. [ALL!] Re-Draw Google Map
         5. [EACH] Re-draw Google Map
         6. Map draw setting
+        7. Run with Selenium
         q. Exit
         r. Reload
         D. Delete all data
@@ -132,6 +134,9 @@ if len(sys.argv) < 2:
 
         elif ans == "6":
             map_setting(cfg)
+
+        elif ans == "7":
+            sel_test_gmail.run()
 
         elif ans == "q":
             sys.exit('USER EXIT')
