@@ -12,18 +12,10 @@ import hashman
 import downloader
 import parseman
 import stenographer
+import conf
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
-
-
-def read_config():
-    try:
-        with open("config.json") as json_file:
-            json_data = json.load(json_file)
-            return json_data
-    except Exception:
-        sys.exit("Config read error.")
 
 
 def get_mail(gid, pw, sender):
@@ -34,6 +26,7 @@ def get_mail(gid, pw, sender):
     d = []
     for mail in mails:
         mail.fetch()
+        mail.read()
         logging.debug(mail.sent_at)
         m.append(mail.html)
         d.append(mail.sent_at)
@@ -104,7 +97,7 @@ def start():
     global cfg
 
     logging.debug("check system config...")
-    cfg = read_config()
+    cfg = conf.read()
 
     logging.debug("check system database...")
     if not os.path.exists(cfg["csv_path"]):
