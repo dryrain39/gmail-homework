@@ -1,9 +1,10 @@
-from PIL import Image
+# -*- coding: utf-8 -*-
+
 from PIL.ExifTags import TAGS, GPSTAGS
 
 
 def get_exif_data(image):
-    """Returns a dictionary from the exif data of an PIL Image item. Also converts the GPS Tags"""
+    # exif data 가져오는 함수.
     exif_data = {}
     info = image._getexif()
     if info:
@@ -46,7 +47,7 @@ def _convert_to_degress(value):
 
 
 def get_lat_lon(exif_data):
-    """Returns the latitude and longitude, if available, from the provided exif_data (obtained through get_exif_data above)"""
+    # 경도와 위도를 반환해준다. 없으면 None
     lat = None
     lon = None
 

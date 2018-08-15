@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 json_f = """{
   "/": "## Account option ##",
   "account_user": "",
@@ -23,4 +25,5 @@ json_f = """{
 
 
 def json_file():
+    # 기본 config를 저장하는 함수
     return json_f

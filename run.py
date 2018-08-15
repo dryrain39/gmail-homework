@@ -3,7 +3,6 @@
 import logging
 import stenographer
 import sys
-import json
 import os
 import shutil
 from mapmaker import Mapmaker
@@ -13,6 +12,8 @@ import sel_test_gmail
 
 
 def system_check():
+    # 프로그램의 설정 파일을 읽고 초기 설정하는 부분이다.
+    # Gmail 계정을 설정하지 않으면 강제로 종료한다.
     global cfg
 
     print("[....] Check system config...")
@@ -34,6 +35,7 @@ def system_check():
         print("[INFO] Database not found. Create system database...")
         stenographer.make_new(cfg["csv_path"])
 
+    # Debug Level 설정 부분. 개발할 때 쓰고 사용하지 않는다.
     print("[....] Set debug level...")
 
     lv = [logging.DEBUG, logging.WARNING, logging.ERROR]
@@ -44,10 +46,12 @@ def system_check():
 
 
 system_check()
+# mapmaker를 로드한다.
 maps = Mapmaker()
 
 
 def map_setting(config):
+    # 지도 화면을 설정하는 함수. config에 저장된 프리셋으로 mapmaker의 설정을 변경한다.
     for idx, item in enumerate(config['map_preset']):
         print('        ' + str(idx + 1) + ' - ' + item[0])
 
@@ -60,6 +64,8 @@ def map_setting(config):
 
 
 def update_images():
+    # 폴더(날짜)별 지도를 그려주는 함수.
+    # 폴더들을 순회하며 csv를 읽고 지도를 그린다.
     print("[WARN] Your map draw setting has been deleted.")
     maps.reset()
 
@@ -79,6 +85,7 @@ def update_images():
 
 
 def draw_all():
+    # 모든 지도를 그리는 함수 전체 데이터가 저장된 csv를 읽고 지도를 그린다.
     data = stenographer.read(cfg["csv_path"])
     for idx, item in enumerate(data):
         if idx > 0 and item[4] != 'N/A' and item[5] != 'N/A':
@@ -89,6 +96,7 @@ def draw_all():
 
 
 def start_gmail():
+    # gmail 파싱 시작 함수. 예약 작업과 메뉴에서 각각 실행시킬 수 있어야 하기에 따로 함수로 빼 두었다.
     import main
     print("[INFO] Sync started. Please wait...")
     main.start()
@@ -96,7 +104,7 @@ def start_gmail():
 
 
 if len(sys.argv) < 2:
-
+    # 메뉴 시작
     ans = True
     while ans:
         print ("""
@@ -157,6 +165,7 @@ if len(sys.argv) < 2:
 
 else:
 
+    # gmail 이라는 인자가 붙으면 즉시 gmail 파싱을 시작한다.
     if sys.argv[1] == 'gmail':
         print("[INFO] Sync Gmail now. Please Wait...")
         start_gmail()
