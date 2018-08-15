@@ -8,35 +8,17 @@ import os
 import shutil
 from mapmaker import Mapmaker
 import paste
-
-
-def read_config():
-    try:
-        with open("config.json") as json_file:
-            json_data = json.load(json_file)
-            return json_data
-    except Exception:
-        with open("config.json", 'w') as json_file:
-            json_file.write(paste.json_file())
-        return False
-
-
-def read_database(path):
-    try:
-        with open(path) as json_file:
-            a = json_file
-            return a
-            pass
-    except Exception:
-        return False
+import conf
 
 
 def system_check():
     global cfg
 
     print("[....] Check system config...")
-    cfg = read_config()
+    cfg = conf.read()
     if cfg is False:
+        with open('config.json', 'w') as json_file:
+            json_file.write(paste.json_file())
         print("[ERR!] System config not found! Set your credential in config.json!")
         l = input()
         sys.exit('Config Not Found')
@@ -47,7 +29,7 @@ def system_check():
         sys.exit('Config Not Set')
 
     print("[....] Check system database...")
-    if read_database(cfg["csv_path"]) is False:
+    if conf.read_db(cfg["csv_path"]) is False:
         print("[INFO] Database not found. Create system database...")
         stenographer.make_new(cfg["csv_path"])
 
